@@ -1,0 +1,226 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS CloudFormation Sample Template RDS_PIOPS: Sample template showing how to create an Amazon RDS Database Instance with provisioned IOPs.**WARNING** This template creates an Amazon Relational Database Service database instance. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Resources": {
+        "myDB": {
+            "Type": "AWS::RDS::DBInstance",
+            "Properties": {
+                "AllocatedStorage": "100",
+                "DBInstanceClass": "db.t2.small",
+                "Engine": "MySQL",
+                "Iops": "1000",
+                "StorageEncrypted": "true",
+                "MasterUsername": "jegadesh",
+                "MasterUserPassword": "jegadesh123"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "1828f12a-4501-4e1f-9856-50e21cac8c7e"
+                }
+            }
+        },
+        "EC2SG3QDKL": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Base Security Group",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "22",
+                        "ToPort": "22"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "0dde2168-9891-4c57-9837-441fd2cfa45a"
+                }
+            }
+        },
+        "EC2SG4AVRW": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Base Security Group",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "80",
+                        "ToPort": "80"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "565eeedb-0703-4f1f-898f-8b61112fc892"
+                }
+            }
+        },
+        "S3BBUWR": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl": "PublicRead"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "38bcc305-058b-44f2-9dd1-ccada7c50c90"
+                }
+            }
+        },
+        "S3B432JB": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl": "Private"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9a38ae49-8f98-4400-8a84-cd17de0f6260"
+                }
+            }
+        },
+        "RDSDBI1XJQ9": {
+            "Type": "AWS::RDS::DBInstance",
+            "Properties": {
+                "AllocatedStorage": "100",
+                "DBInstanceClass": "db.t2.small",
+                "Engine": "MySQL",
+                "Iops": "1000",
+                "StorageEncrypted": "false",
+                "MasterUsername": "jegadesh",
+                "MasterUserPassword": "jegadesh123"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "1ecf674f-9d1e-47f4-8ecf-69193b4a117f"
+                }
+            }
+        },
+        "EC2V3Z8HI": {
+            "Type": "AWS::EC2::Volume",
+            "Properties": {
+                "Size": "100",
+                "Encrypted": "true",
+                "AvailabilityZone": "us-east-1c"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "147df536-70a5-43d4-9494-97ecc426f252"
+                }
+            }
+        },
+        "EC2VXPFY": {
+            "Type": "AWS::EC2::Volume",
+            "Properties": {
+                "Size": "100",
+                "Encrypted": "false",
+                "AvailabilityZone": "us-east-1c"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "636a70ea-5520-465b-9cbd-1d0984aee241"
+                }
+            }
+        }
+    },
+    "Metadata": {
+        "AWS::CloudFormation::Designer": {
+            "1828f12a-4501-4e1f-9856-50e21cac8c7e": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 60,
+                    "y": 60
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "0dde2168-9891-4c57-9837-441fd2cfa45a": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": -20,
+                    "y": 60
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "565eeedb-0703-4f1f-898f-8b61112fc892": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": -90,
+                    "y": 60
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "38bcc305-058b-44f2-9dd1-ccada7c50c90": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 200,
+                    "y": 60
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "9a38ae49-8f98-4400-8a84-cd17de0f6260": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 270,
+                    "y": 60
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "1ecf674f-9d1e-47f4-8ecf-69193b4a117f": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 130,
+                    "y": 60
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "147df536-70a5-43d4-9494-97ecc426f252": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": -170,
+                    "y": 60
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "636a70ea-5520-465b-9cbd-1d0984aee241": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": -240,
+                    "y": 60
+                },
+                "z": 0,
+                "embeds": []
+            }
+        }
+    }
+}
