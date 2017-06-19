@@ -87,6 +87,27 @@ def s3_check_function(event):
     table_name = "jarvis_s3_data"
     sql_action(s3_data,table_name)
     
+#Function to check the encryption of s3 bucket object
+def s3object_check_function(event):
+    s3object_data = {}
+    s3object_data["bucketName"] = event["requestParameters"]["bucketName"]
+    s3object_data["objectName"] = event["requestParameters"]["key"]
+    s3object_data["eventType"] = event["eventType"]
+    s3object_data["awsRegion"] = event["awsRegion"]
+    s3object_data["eventName"] = event["eventName"]
+    s3object_data["creationDate"] = event["userIdentity"]["sessionContext"]["attributes"]["creationDate"]
+    s3object_data["arn"] = event["userIdentity"]["arn"]
+    s3object_data["userAgent"] = event["userAgent"]
+    if "x-amz-server-side-encryption" in event["responseElements"].keys():
+        s3object_data["Encryption"] = True
+    else:
+        s3object_data["Encryption"] = False
+    emaiL_subject = "AWS Lambda Security Notification: S3 Bucket Object without Server Side Encryption"
+    email_body = '<html><head><title>Alert from Jarvis</title></head><body><p>Hi CloudUser,</p><p>your are receiving notification for the below event:</p><table border="1"><tr><th>Resource</th><th>Bucket Name</th><th>Object Name</th><th>Created by</th><th>Alert Event</th></tr><tr><td>S3 Object</td><td>' + s3object_data["bucketName"] + '</td><td>' + s3object_data["objectName"] + '</td><td>' + s3object_data["arn"] + '</td><td><font color="rgb(0,0,0)">Created S3 Bucket Object without Server Side Encryption</font></td></tr></table><p>Please act on fixing this security event immediately. If you need technical assistance, reach out to our security team.</p><p>Thanks,</p><p>Jarvis</p><br><p>PROTECT YOUR NETWORK AS IF IT WOULD BE A HOTEL AND NOT AS IF IT WOULD BE A CASTLE</p></body></html>'
+    response = sesclient.send_email(Source = email_from,Destination={'ToAddresses': [email_to,],'CcAddresses': [email_cc,]},Message={'Subject': {'Data': emaiL_subject},'Body': {'Html': {'Data': email_body}}})
+    table_name = "jarvis_s3object_data"
+    sql_action(s3object_data,table_name)
+
 
 #Function to check the EBS volume encryption
 def ebs_check_function(event):
@@ -173,5 +194,7 @@ def lambda_handler(event, context):
         ebs_check_function(message_data)
     elif message_data["eventName"] == "CreateBucket":
         s3_check_function(message_data)
+    elif message_data["eventName"] == "PutObject":
+        s3object_check_function(message_data)
     else:
         return True
